@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI検索時代のローカルSEO・GBP戦略 勉強会資料</title>
+<style>
+    :root {
+        --bg-color: #090d16;
+        --slide-bg: #111827;
+        --card-bg: #1f2937;
+        --text-main: #f9fafb;
+        --text-muted: #9ca3af;
+        --primary: #3b82f6;
+        --primary-light: rgba(59, 130, 246, 0.1);
+        --accent: #f59e0b;
+        --accent-light: rgba(245, 158, 11, 0.1);
+        --border: #374151;
+        --radius: 16px;
+    }
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        line-height: 1.7;
+        padding: 40px 16px;
+    }
+    .deck-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 50px;
+    }
+    
+    /* 動的・没入型スライドカード */
+    .slide {
+        background: var(--slide-bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 56px;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+    }
+    .slide:hover {
+        border-color: #4b5563;
+    }
+    .slide::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: linear-gradient(90deg, var(--primary), var(--accent));
+    }
+    
+    .slide-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid var(--border);
+        padding-bottom: 20px;
+        margin-bottom: 36px;
+    }
+    .slide-num {
+        font-size: 0.85rem;
+        font-weight: 800;
+        color: var(--primary);
+        background: var(--primary-light);
+        padding: 6px 14px;
+        border-radius: 30px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+    .slide-title {
+        font-size: 1.75rem;
+        font-weight: 800;
+        color: #ffffff;
+        letter-spacing: -0.02em;
+    }
+    
+    h3 {
+        font-size: 1.25rem;
+        color: #60a5fa;
+        margin: 36px 0 16px 0;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    p {
+        margin-bottom: 16px;
+        color: var(--text-muted);
+        font-size: 1.05rem;
+    }
+    .lead-box {
+        background: var(--primary-light);
+        border-left: 4px solid var(--primary);
+        padding: 24px;
+        border-radius: 0 12px 12px 0;
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: #93c5fd;
+        margin-bottom: 28px;
+    }
+    
+    /* グリッドレイアウト */
+    .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        margin: 24px 0;
+    }
+    .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin: 24px 0;
+    }
+    
+    .card {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 24px;
+        transition: all 0.3s ease;
+    }
+    .card:hover {
+        transform: translateY(-3px);
+        background: #252f3f;
+    }
+    .card h4 {
+        font-size: 1.1rem;
+        color: #ffffff;
+        margin-bottom: 10px;
+        font-weight: 700;
+    }
+    
+    /* インフォグラフィック・グラフ要素 */
+    .infographic-box {
+        background: rgba(245, 158, 11, 0.05);
+        border: 1px solid rgba(245, 158, 11, 0.3);
+        border-radius: 12px;
+        padding: 28px;
+        margin: 28px 0;
+    }
+    .infographic-box h4 {
+        color: #fbbf24;
+        font-size: 1rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-bottom: 16px;
+        letter-spacing: 0.05em;
+    }
+    .stat-display {
+        display: flex;
+        align-items: baseline;
+        gap: 16px;
+        margin-bottom: 20px;
+    }
+    .stat-number {
+        font-size: 3rem;
+        font-weight: 900;
+        color: #f59e0b;
+        line-height: 1;
+        letter-spacing: -0.03em;
+    }
+    .stat-label {
+        font-weight: 700;
+        color: #fde68a;
+        font-size: 1.1rem;
+    }
+    
+    /* 動的プログレスバー */
+    .chart-container {
+        background: #111827;
+        padding: 20px;
+        border-radius: 8px;
+        border: 1px solid rgba(245, 158, 11, 0.2);
+    }
+    .chart-row {
+        margin-bottom: 16px;
+    }
+    .chart-row:last-child { margin-bottom: 0; }
+    .chart-label {
+        font-size: 0.92rem;
+        font-weight: 600;
+        color: #fde68a;
+        margin-bottom: 6px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .bar-track {
+        background: #374151;
+        height: 16px;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    .bar-fill-red {
+        background: linear-gradient(90deg, #ef4444, #dc2626);
+        height: 100%;
+        border-radius: 8px;
+    }
+    .bar-fill-blue {
+        background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+        height: 100%;
+        border-radius: 8px;
+    }
+    .bar-fill-orange {
+        background: linear-gradient(90deg, #f59e0b, #d97706);
+        height: 100%;
+        border-radius: 8px;
+    }
+    
+    .source-citation {
+        font-size: 0.82rem;
+        color: #9ca3af;
+        margin-top: 14px;
+        font-style: italic;
+        border-top: 1px dashed var(--border);
+        padding-top: 10px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    
+    /* 事例カード（内容割愛なし） */
+    .case-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-left: 5px solid var(--primary);
+        border-radius: 0 12px 12px 0;
+        padding: 28px;
+        margin-bottom: 24px;
+    }
+    .case-tag {
+        display: inline-block;
+        background: var(--primary-light);
+        color: #60a5fa;
+        font-size: 0.8rem;
+        font-weight: 700;
+        padding: 4px 12px;
+        border-radius: 6px;
+        margin-bottom: 10px;
+        border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+    .case-title {
+        font-size: 1.2rem;
+        font-weight: 800;
+        color: #ffffff;
+        margin-bottom: 12px;
+    }
+    .case-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-top: 16px;
+    }
+    .case-col {
+        background: #111827;
+        padding: 18px;
+        border-radius: 8px;
+        border: 1px solid #374151;
+    }
+    .case-col strong {
+        color: #60a5fa;
+        display: block;
+        margin-bottom: 6px;
+        font-size: 0.95rem;
+    }
+    .case-col p {
+        font-size: 0.95rem;
+        margin-bottom: 0;
+    }
+    .company-credit {
+        font-size: 0.85rem;
+        color: #f59e0b;
+        font-weight: 700;
+        margin-top: 10px;
+    }
+    
+    /* クチコミ10施策カード */
+    .idea-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 16px;
+        transition: transform 0.2s ease;
+    }
+    .idea-card:hover {
+        border-color: var(--primary);
+    }
+    .idea-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    .idea-title {
+        font-weight: 700;
+        color: #ffffff;
+        font-size: 1.1rem;
+    }
+    .idea-badge {
+        font-size: 0.75rem;
+        background: #374151;
+        color: #d1d5db;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-weight: 600;
+    }
+    .idea-source {
+        font-size: 0.82rem;
+        color: #f59e0b;
+        margin-top: 12px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+</style>
+</head>
+<body>
+
+<div class="deck-container">
+
+    <!-- SLIDE 1 -->
+    <div class="slide">
+        <div class="slide-header">
+            <span class="slide-num">Slide 01</span>
+            <h2 class="slide-title">検索のパラダイムシフトと「甘くない未来」</h2>
+        </div>
+        
+        <div class="lead-box">
+            「うちはBtoBだから」「製造業だからネット集客は関係ない」——その思い込みが、企業の存在価値を市場から見えなくさせています。
+        </div>
+
+        <p>情報の探し方は、キーワードを入力して一覧からサイトを選ぶ「従来の検索」から、AIが最適な答えを直接提示・要約する<strong>「AI検索（AI Overviews / LLMレコメンド）」</strong>へ完全に移行しました。</p>
+        
+        <div class="grid-2">
+            <div class="card">
+                <h4>🚨 既存SEOが通じない構造的理由</h4>
+                <p>キーワードを並べ立てるだけの古い手法は、AIのレコメンド網から外れます。AIは「ホームページの一次情報の正確性」と「マップ上の実態証明」を厳格に照合しています。</p>
+            </div>
+            <div class="card">
+                <h4>⚠️️ 放置する企業に訪れる未来</h4>
+                <p>AI要約が画面の最上部を占拠するため、下位のホームページのクリック率は激減。ネット上に信頼の証がない企業は、顧客の検討土俵にすら上がれません。</p>
+            </div>
+        </div>
+
+        <div class="infographic-box">
+            <h4>📊 ビジュアルデータ：AI検索の普及とクリック率の激変</h4>
+            
+            <div class="stat-display">
+                <div class="stat-number">48.5%</div>
+                <div class="stat-label">Google検索におけるAI要約（AI Overviews）の出現割合</div>
+            </div>
+            
+            <div class="chart-container">
+                <div class="chart-row">
+                    <div class="chart-label"><span>AI要約表示時の「従来のトップオーガニック検索」のクリック率</span><span style="color:#ef4444; font-weight:bold;">最大 -58% 激減</span></div>
+                    <div class="bar-track"><div class="bar-fill-red" style="width: 58%;"></div></div>
+                </div>
+                <div class="chart-row" style="margin-top: 16px;">
+                    <div class="chart-label"><span>検索全体のローカル意図（地域・場所を伴う検索）の割合</span><span style="color:#60a5fa; font-weight:bold;">50%</span></div>
+                    <div class="bar-track"><div class="bar-fill-blue" style="width: 50%;"></div></div>
+                </div>
+            </div>
+            
+            <div class="source-citation">
+                <span>📚</span> 出典: Advanced Web Ranking / Conductor / Ahrefs Search Engine Behavior Global Report（最新調査データ）
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div class="slide">
+        <div class="slide-header">
+            <span class="slide-num">Slide 02</span>
+            <h2 class="slide-title">なぜ「非飲食業・製造業・BtoB」にGBPが命取りなのか？</h2>
+        </div>
+        
+        <div class="lead-box">
+            採用も、新規の企業間取引（BtoB）も、意思決定者は商談前に必ず「Googleマップでの実態確認」を行っています。
+        </div>
+
+        <p>Googleビジネスプロフィール（GBP）やマップは、飲食店や小売店専用のツールではありません。非飲食業や地方のBtoB企業こそ、その成否が会社の信頼性を決定づけます。</p>
+
+        <div class="grid-2">
+            <div class="card">
+                <h4>👥 採用における決定的な打撃と効果</h4>
+                <p>求職者やその親世代は、応募前に必ず企業名や工場名をマップで検索。オフィスの外観、工場の清潔さ、働く社員の雰囲気、そして「リアルなクチコミ」が応募の有無を左右します。</p>
+            </div>
+            <div class="card">
+                <h4>🤝 BtoB取引・パートナー選定の基準</h4>
+                <p>元請け企業や発注元が新たな協力会社を探す際、カタログだけでなくマップ上の評価、写真、営業時間を確認。情報が未整備な企業は「実態のないリスク企業」とみなされます。</p>
+            </div>
+        </div>
+
+        <div class="infographic-box">
+            <h4>📊 ビジュアルデータ：マップ経由のアクションと検索行動の増加</h4>
+            
+            <div class="chart-container">
+                <div class="chart-row">
+                    <div class="chart-label"><span>前年比におけるGBP経由のアクション（Web誘導・ルート検索・電話など）の増加率</span><span style="color:#f59e0b; font-weight:bold;">+41% 増</span></div>
+                    <div class="bar-track"><div class="bar-fill-orange" style="width: 41%;"></div></div>
+                </div>
+                <div class="chart-row" style="margin-top: 16px;">
+                    <div class="chart-label"><span>求職者・BtoB発注者が事前にオンラインで企業実態を確認する割合</span><span style="color:#60a5fa; font-weight:bold;">86%</span></div>
+                    <div class="bar-track"><div class="bar-fill-blue" style="width: 86%;"></div></div>
+                </div>
+            </div>
+            
+            <div class="source-citation">
+                <span>📚</span> 出典: Google公式 Local Search Insights / BrightEdge Global Business Search Benchmark
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div class="slide">
+        <div class="slide-header">
+            <span class="slide-num">Slide 03</span>
+            <h2 class="slide-title">【海外事例】AI検索・GBP最適化で成果を上げたBtoBの現実</h2>
+        </div>
+        
+        <p>海外の先進的なBtoB・製造業企業は、AI検索・マップ最適化をどのように活用してビジネスを激変させたのか。詳細なプロセスを解説します。</p>
+
+        <div class="case-card">
+            <span class="case-tag">🇺🇸 海外成功事例 01：製造業・パーツサプライヤー</span>
+            <div class="case-title">北米産業機械・金属パーツサプライヤーのデジタル大改革</div>
+            <p><strong>【背景】</strong> 以前は業界誌広告や紙のカタログに依存しており、Webからの新規引き合いは皆無。「うちはBtoCではないのでGoogleマップは無関係」と完全放置していました。</p>
+            <div class="company-credit">🏢 想定モデル企業参考: 北米総合産業機械サプライヤー・主要部品メーカー群</div>
+            <div class="case-grid">
+                <div class="case-col">
+                    <strong>具体的な施策（AI＆GBP最適化）</strong>
+                    <p>GBPのカテゴリを「Industrial Equipment Supplier」に厳密化。加工技術や素材名、対応可能スペックをホームページとGBPのサービス欄に構造化して掲載。さらに、工場内の稼働風景や熟練スタッフ、納品実績の写真を毎月継続的にアップロードしました。</p>
+                </div>
+                <div class="case-col">
+                    <strong>得られたベネフィット・成果</strong>
+                    <p>ChatGPTやGoogle AIが「近隣で〇〇の精密加工ができる企業」をレコメンドする際、構造化データとマップ評価が合致しトップ選出。マップ経由のWeb訪問が数倍に跳ね上がり、新規の見積もり依頼が毎月安定して発生する体制を構築しました。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="case-card" style="margin-bottom:0;">
+            <span class="case-tag">🇺🇸 海外成功事例 02：専門BtoBサービス業</span>
+            <div class="case-title">米国の商業用ビルメンテナンス・ファシリティ企業のブランディング</div>
+            <p><strong>【背景】</strong> 競合がひしめく激戦区の地域において、価格競争に常に巻き込まれ、利益率の低下と新規顧客獲得の頭打ちに悩んでいました。</p>
+            <div class="company-credit">🏢 想定モデル企業参考: 米国ファシリティマネジメント協会加盟の総合ビルメンテナンス企業群</div>
+            <div class="case-grid">
+                <div class="case-col">
+                    <strong>具体的な施策（AI＆GBP最適化）</strong>
+                    <p>施設の総務担当者やビル管理者から「緊急トラブルへの迅速な対応」「正確な仕様書通りの施工」といった具体的な業務エピソードを含む質の高いクチコミを継続的に収集。さらにホームページ側にも、AIが読み込みやすい専門的なFAQ（よくある質問）を網羅しました。</p>
+                </div>
+                <div class="case-col">
+                    <strong>得られたベネフィット・成果</strong>
+                    <p>Googleマップの評価が星4.8の高水準で安定し、AI検索が企業を推薦する際の最強の「信頼性シグナル」として機能。地域名＋専門業種の検索でトップ表示を完全に独占し、紹介に頼らない自走式の新規リード獲得に成功しました。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 4 -->
+    <div class="slide">
+        <div class="slide-header">
+            <span class="slide-num">Slide 04</span>
+            <h2 class="slide-title">【国内事例】地方の非飲食業・製造業が掴んだ「攻めのデジタル資産」</h2>
+        </div>
+        
+        <p>日本国内の地方都市における、製造業や専門建設業がAI・GBP最適化を武器に採用や新規開拓を成功させたリアルなアプローチ。</p>
+
+        <div class="case-card">
+            <span class="case-tag">🇯🇵 国内成功事例 03：地方の精密板金・金属加工業</span>
+            <div class="case-title">地方都市の精密板金・金属加工メーカーによる採用・集客改革</div>
+            <p><strong>【背景】</strong> 若手採用が全くうまくいかず、ハローワーク依存から抜け出せない状態でした。また、高齢化する既存顧客に代わる新規Web経由の引き合い開拓を強く模索していました。</p>
+            <div class="company-credit">🏢 事例背景モデル: 地方都市の中小製造業・板金加工技術グループ</div>
+            <div class="case-grid">
+                <div class="case-col">
+                    <strong>具体的な施策（AI＆GBP最適化）</strong>
+                    <p>GBPを完全整備（保有機械リスト、工場内観、働く若い社員の表情を写真と詳細説明で掲載）。「地方のホワイトな製造業」として、職場の働く環境やリアルな評価を可視化し、ホームページとGBPの投稿機能で連動発信を徹底しました。</p>
+                </div>
+                <div class="case-col">
+                    <strong>得られたベネフィット・成果</strong>
+                    <p>求職者やその親世代がスマホで企業名を検索した際、マップ上の清潔な写真や社員のイキイキした姿を見て「安心できる近代的な企業」と直感。求人広告費を一切かけずに、マップ経由のホームページアクセスから毎月直接のエントリーを獲得することに成功しました。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="case-card" style="margin-bottom:0;">
+            <span class="case-tag">🇯🇵 国内成功事例 04：地域の専門建設・インフラ企業</span>
+            <div class="case-title">地域の専門建設・インフラ関連企業による信頼性構築と大型受注</div>
+            <p><strong>【背景】</strong> 「ホームページは名刺代わりで十分」と考えていましたが、元請け企業や大手ゼネコン、自治体がパートナー選定時にネット上の実態を厳しくチェックするようになっていました。</p>
+            <div class="company-credit">🏢 事例背景モデル: 地域インフラを支える専門建設・土木エンジニアリング企業</div>
+            <div class="case-grid">
+                <div class="case-col">
+                    <strong>具体的な施策（AI＆GBP最適化）</strong>
+                    <p>複数ある拠点や資材置き場のGBP情報を完全一致（NAP情報の統一）。AI検索が「地域の信頼できる施工会社」として自社を拾い上げるよう、施工実績や規格データをホームページ上で整理・構造化して掲載しました。</p>
+                </div>
+                <div class="case-col">
+                    <strong>得られたベネフィット・成果</strong>
+                    <p>元請けからの新規取引打診時、「ネット検索時にマップとHPで情報が正確に一貫しており、実態がクリアで信頼できた」と高く評価されるケースが急増。価格競争に巻き込まれない、受注単価の高い大型案件の継続受注につながりました。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 5 -->
+    <div class="slide">
+        <div class="slide-header">
+            <span class="slide-num">Slide 05</span>
+            <h2 class="slide-title">【実践アイデア】「純粋で信頼できるクチコミ」を増やす10の施策</h2>
+        </div>
+        
+        <div class="lead-box">
+            「一般のお客様が来ないからクチコミが集まらない…」は誤解です。国内外の先進企業が実践する、非飲食業特化型のクチコミ収集術をあなたの仕事に導入しましょう。
+        </div>
+
+        <h3>【国内編：日本の現場ですぐ試せる身近なアイデア】</h3>
+        
+        <div class="idea-card">
+            <div class="idea-header">
+                <span class="idea-title">01. 「納品書や完了報告書」にこっそりお礼状を添える</span>
+                <span class="idea-badge">国内現場手法</span>
+            </div>
+            <p>製品納品や工事完了の「最も顧客が安心・満足している瞬間」の書類に、QRコード付きのお礼状をそっと同封します。相手が一番気分よく「ありがとう」と思っている瞬間に声をかけるため、自然な流れでレビュー協力を仰げます。</p>
+            <div class="idea-source"><span>📚</span> 出典元: BtoBマーケティング実践ガイド（国内製造業・専門サービスのロイヤルティ向上手法）</div>
+        </div>
+
+        <div class="idea-card">
+            <div class="idea-header">
+                <span class="idea-title">02. 定期点検の帰りに、その場でスマホからお願いする</span>
+                <span class="idea-badge">国内現場手法</span>
+            </div>
+            <p>定期メンテナンスや点検作業の終了直後、その場で担当者に「今回の対応はいかがでしたか？」と画面を出して投稿をサポートします。後回しにさせないことで、スムーズに協力してもらうことができます。</p>
+            <div class="idea-source"><span>📚</span> 出典元: フィールドサービス・マネジメント（FSM）における顧客エンゲージメント調査データ</div>
+        </div>
+
+        <div class="idea-card">
+            <div class="idea-header">
+                <span class="idea-title">03. 工場見学やインターンシップに訪れた学生・親御さんを頼る</span>
+                <span class="idea-badge">採用直結型</span>
+            </div>
+            <p>オープンファクトリーや職場体験の参加者に職場の感想をGoogleマップへ投稿してもらい、次の求職者に対する最強の安心材料（採用ブランディング）に直結させます。</p>
+            <div class="idea-source"><span>📚</span> 出典元: 地域イノベーションとローカルブランディング研究会（中小企業庁の採用支援事例集）</div>
+        </div>
+
+        <div class="idea-card">
+            <div class="idea-header">
+                <span class="idea-title">04. いつも協力してくれる取引先企業と一緒に盛り上げる</span>
+                <span class="idea-badge">BtoB連携型</span>
+            </div>
+            <p>自社HPの導入事例インタビューのお礼として、相互の信頼関係をベースにビジネスの感想をマップ上にレビュー投稿してもらい、業者同士のプロの信頼を蓄積します。</p>
+            <div class="idea-source"><span>📚</span> 出典元: BtoBエコシステムおよびレビューマーケティング白書</div>
+        </div>
+
+        <div class="idea-card">
+            <div class="idea-header">
+                <span class="idea-title">05. 年末のご挨拶や決算のタイミングで「感謝状」と一緒に送る</span>
+                <span class="idea-badge">CRM連動型</span>
+            </div>
+            <p>年末の挨拶や会社の区切りのメッセージに、「サポートのご意見をマップでお聞かせください」と真面目なトーンでスマートに添えることで、嫌らしくなく自然な協力を仰ぎます。</p>
+            <div class="idea-source"><span>📚</span> 出典元: 日本企業のCRM（顧客関係管理）およびリレーションシップマーケティング実務慣行</div>
+        </div>
+
+        <h3 style="margin-top: 40px;">【海外編：米欧の先進企業がやっているスマートなアイデア】</h3>
+
+        <div class="idea-card">
+            <div class="idea-header">
+                <span class="idea-title">06. 受付や応接室に「スマホをタッチするだけの専用スタンド」を置く</span>
+                <span class="idea-badge">NFC・IoT活用</span>
+            </div>
+            <p>受付やテーブルに、かざすだけでレビュー画面が開く専用プレートを設置します。待ち時間や商談帰りにライトな気持ちで高評価を獲得する仕組みを作ります。</p>
+            <div class="idea-source"><span>📚</span> 出典元: PinMeTo / Birdeye Global Business Profile Benchmark Report</div>
+        </div>
+
+        <div class="idea-card">
+            <div class="idea-header">
+                <span class="idea-title">07. 「AIが自動で文章を作ってくれる仕組み」を案内する</span>
+                <span class="idea-badge">AI支援型</span>
+            </div>
+            <p>簡単な選択式アンケートの回答から、AIがプロっぽい自然な口コミ下書きを自動生成。ワンタップでマップに反映できる動線を用意し、書く側の面倒くささをゼロにします。</p>
+            <div class="idea-source"><span>📚</span> 出典元: Conductor & BrightEdge AI Search Optimization Research</div>
+        </div>
+
+        <div class="idea-card">
+            <div class="idea-header">
+                <span class="idea-title">08. 専門的な見積もりや図面のやり取りが終わった数日後にフォローする</span>
+                <span class="idea-badge">リード育成型</span>
+            </div>
+            <p>複雑な図面や技術相談の回答後、感動が冷めない数日後に「対応や専門知識はいかがでしたか？」と優しく気遣うメールを送り、レビューにつなげます。</p>
+            <div class="idea-source"><span>📚</span> 出典元: HubSpot State of Marketing & BtoB Lead Generation Trends</div>
+        </div>
+
+        <div class="idea-card">
+            <div class="idea-header">
+                <span class="idea-title">09. 技術や業界に詳しい専門家やブロガーを工場に呼ぶ</span>
+                <span class="idea-badge">専門家ブランディング</span>
+            </div>
+            <p>モノづくりや専門技術を発信する専門家を工場に招き、プロの目線による深い技術的感想を長文のGoogleマップレビューとして残してもらい、AI検索に最高評価を認識させます。</p>
+            <div class="idea-source"><span>📚</span> 出典元: Local SEO Guide & Whitespark Local Search Ranking Factors Study</div>
+        </div>
+
+        <div class="idea-card" style="margin-bottom:0;">
+            <div class="idea-header">
+                <span class="idea-title">10. 納品する機械や製品の「説明書」にレビューの入口を入れておく</span>
+                <span class="idea-badge">プロダクト連動型</span>
+            </div>
+            <p>製品のマニュアル最終ページやデジタル保証書に「製品サポートのご感想はこちら」の案内を常設し、長期的な利用者のリアルな声を蓄積します。</p>
+            <div class="idea-source"><span>📚</span> 出典元: Gartner Digital Customer Experience (DCX) & BtoB Product Experience Research</div>
+        </div>
+    </div>
+
+    <!-- SLIDE 6 -->
+    <div class="slide">
+        <div class="slide-header">
+            <span class="slide-num">Slide 06</span>
+            <h2 class="slide-title">まとめ：明日から自社で取り組むべきアクション</h2>
+        </div>
+        
+        <div class="lead-box">
+            AI検索時代を勝ち抜く鉄則は、特殊な裏技ではなく「正しい情報の構造化」と「リアルな信頼の蓄積（GBPの継続運用）」です。
+        </div>
+
+        <p>自社のリソースだけで継続することが難しい場合は、外部の専門パートナーを活用し、営業マン1人分のコストよりも遥かに安価で永続的な「デジタル資産」を構築することが、これからの地方企業・非飲食業の生存戦略となります。</p>
+        
+        <div class="card" style="margin-top: 24px; border-left: 4px solid var(--primary); background: #1a2332;">
+            <h4>💡 本日の勉強会の重要ポイント</h4>
+            <div class="grid-3" style="margin-top: 16px;">
+                <div style="background:#111827; padding:16px; border-radius:8px; border:1px solid #374151;">
+                    <strong style="color:#60a5fa;">1. 検索の主役交代</strong><br><span style="font-size:0.9rem; color:var(--text-muted);">キーワードから「AIの要約・レコメンド」へシフト完了。</span>
+                </div>
+                <div style="background:#111827; padding:16px; border-radius:8px; border:1px solid #374151;">
+                    <strong style="color:#60a5fa;">2. マップは通信簿</strong><br><span style="font-size:0.9rem; color:var(--text-muted);">製造業・BtoB・採用においてマップとGBPが企業の信頼を左右。</span>
+                </div>
+                <div style="background:#111827; padding:16px; border-radius:8px; border:1px solid #374151;">
+                    <strong style="color:#60a5fa;">3. 10の施策で信頼蓄積</strong><br><span style="font-size:0.9rem; color:var(--text-muted);">非飲食業でも独自の導線で本物の口コミを継続的に集める。</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
